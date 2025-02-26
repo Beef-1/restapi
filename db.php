@@ -6,7 +6,7 @@ $dbname = "main";
 $adminpass = "admin";
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+    $pdo = new PDO("mysql:host=$host", $user, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbname`");
     $pdo->exec("USE `$dbname`");
@@ -18,7 +18,7 @@ try {
     $stmt->execute();
     if ($stmt->fetchColumn() == 0) {
         $stmt = $pdo->prepare("INSERT INTO `id_table` (`user`, `pass`) VALUES ('adm', :pass)");
-        $stmt->execute([':pass'=>password_hash($adminpass, PASSWORD_DEFAULT)]);
+        $stmt->execute([':pass' => password_hash($adminpass, PASSWORD_DEFAULT)]);
     }
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
